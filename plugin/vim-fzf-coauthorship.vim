@@ -5,7 +5,7 @@ endfunction
 
 function! Coauthorship()
   call fzf#run({
-    \ 'source': 'git log --pretty="%an <%ae>" | sort | uniq',
+    \ 'source': "bash -c '{ git log --format=\"%n %(trailers:key=Co-authored-by)\" | grep -oP \"(?<=Co-authored-by: )(.*)\" & git log --pretty=\"%an <%ae>\" ;} | sort | uniq | grep -v dependabot'",
     \ 'sink': function('AttributeCoauthorship'),
     \ 'options': "-i --multi --preview 'git log -1 --author {} --pretty=\"authored %h %ar:%n%n%B\"'"
     \ })
